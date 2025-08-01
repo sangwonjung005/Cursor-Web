@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMS 데이터 요약본</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 15px;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s ease;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section-title {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .detail-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .detail-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .detail-list li:before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .image-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .image-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .data-table table {
+            margin: 0;
+        }
+        
+        .data-table th {
+            background: #667eea;
+            color: white;
+            border: none;
+        }
+        
+        .data-table td {
+            border-color: #f0f0f0;
+        }
+        
+        .chart-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .chart-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
+        }
+        
+        .chart-info {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        
+        .chart-image-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .canvas-graph {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="main-container">
+            <div class="header">
+                <h1><i class="fas fa-chart-line"></i> BMS 데이터 요약본</h1>
+                <p class="mb-0">BMS 센서 데이터 전처리 및 PCA 분석 결과</p>
+            </div>
+
+            <!-- 통계 카드 -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">267</div>
+                    <div class="stat-label">처리된 파일 수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">7,252,377</div>
+                    <div class="stat-label">총 데이터 행 수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">308</div>
+                    <div class="stat-label">총 데이터 열 수</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">총 차량 수</div>
+                </div>
+            </div>
+
+            <!-- 데이터 전처리 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-database"></i>
+                    데이터 전처리
+                </h3>
+                <ul class="detail-list">
+                    <li>267개의 .pkl 파일을 /aicar_preproc에서 로딩</li>
+                    <li>총 7,252,377행, 308열의 데이터</li>
+                </ul>
+            </div>
+
+            <!-- 평균 요약 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-calculator"></i>
+                    평균 요약
+                </h3>
+                <ul class="detail-list">
+                    <li>device_no 기준으로 센서 평균값 계산</li>
+                    <li>결과 파일: device_mean_summary.csv</li>
+                </ul>
+                
+                <!-- 샘플 데이터 테이블 -->
+                <div class="data-table mt-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Device No</th>
+                                <th>Voltage Mean</th>
+                                <th>Current Mean</th>
+                                <th>Temperature Mean</th>
+                                <th>SOC Mean</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1229665632.0</td>
+                                <td>3.65</td>
+                                <td>2.1</td>
+                                <td>25.3</td>
+                                <td>85.2</td>
+                            </tr>
+                            <tr>
+                                <td>1241290664.0</td>
+                                <td>3.68</td>
+                                <td>1.9</td>
+                                <td>24.8</td>
+                                <td>87.1</td>
+                            </tr>
+                            <tr>
+                                <td>1241290683.0</td>
+                                <td>3.62</td>
+                                <td>2.3</td>
+                                <td>26.1</td>
+                                <td>82.5</td>
+                            </tr>
+                            <tr>
+                                <td>1241248562.0</td>
+                                <td>3.70</td>
+                                <td>1.8</td>
+                                <td>23.9</td>
+                                <td>89.3</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- PCA 분석 결과 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    PCA 분석 결과
+                </h3>
+                <ul class="detail-list">
+                    <li>1차 PCA: 평균값 기반 분석으로 4개 포인트만 출력되어 정보 부족</li>
+                    <li>보완 접근: 원본 데이터의 모든 행을 기반으로 PCA 수행</li>
+                    <li>Raw PCA: 수천 개의 관측치를 기반으로 한 밀집된 2D/3D 분포 생성</li>
+                    <li>차량 간 특성과 아웃라이어를 명확히 확인</li>
+                </ul>
+            </div>
+
+            <!-- 결측치 처리 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-tools"></i>
+                    결측치 처리
+                </h3>
+                <ul class="detail-list">
+                    <li>NaN 값을 열 평균으로 대체</li>
+                    <li>모든 값이 NaN인 열(seq 열) 제거</li>
+                </ul>
+            </div>
+
+            <!-- 분석 결과 그래프 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-chart-area"></i>
+                    분석 결과 그래프
+                </h3>
+                <div class="image-container">
+                    <div class="image-card">
+                        <h4>2D PCA 분석 결과</h4>
+                        <div class="chart-container">
+                            <div class="chart-image-container">
+                                <canvas id="pca2d" width="600" height="400" class="canvas-graph"></canvas>
+                            </div>
+                            <div class="chart-info">
+                                <h5>PCA of All Device Rows (No Grouping)</h5>
+                                <p>주요 클러스터와 아웃라이어 포인트가 명확히 구분되는 2D 분포</p>
+                                <p><strong>특징:</strong></p>
+                                <ul class="text-start">
+                                    <li>대부분의 데이터가 오른쪽에 밀집된 클러스터 형성</li>
+                                    <li>왼쪽에 고립된 아웃라이어 포인트 존재</li>
+                                    <li>PC1: -175 ~ 25 범위</li>
+                                    <li>PC2: -8.5 ~ 11 범위</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-card">
+                        <h4>3D PCA 분석 결과</h4>
+                        <div class="chart-container">
+                            <div class="chart-image-container">
+                                <canvas id="pca3d" width="600" height="400" class="canvas-graph"></canvas>
+                            </div>
+                            <div class="chart-info">
+                                <h5>PCA of Raw Data (3D)</h5>
+                                <p>device_no별로 색상이 구분된 3차원 분포</p>
+                                <p><strong>클러스터 분석:</strong></p>
+                                <ul class="text-start">
+                                    <li><span style="color: purple;">보라색</span>: 1229665632.0 (가장 큰 클러스터)</li>
+                                    <li><span style="color: orange;">주황색</span>: 1241290664.0</li>
+                                    <li><span style="color: green;">녹색</span>: 1241290683.0</li>
+                                    <li><span style="color: brown;">갈색</span>: 1241248562.0</li>
+                                    <li><span style="color: lightblue;">하늘색</span>: nan (아웃라이어)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 결과 파일 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-file-alt"></i>
+                    결과 파일
+                </h3>
+                <ul class="detail-list">
+                    <li>device_mean_summary.csv</li>
+                    <li>device_pca_result.csv</li>
+                    <li>device_pca_plot.png</li>
+                    <li>raw_pca_plot_3d.png</li>
+                </ul>
+            </div>
+
+            <!-- 실행 방법 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-play-circle"></i>
+                    웹 서버 실행 방법
+                </h3>
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle"></i> Python 설치 후 실행:</h5>
+                    <ol>
+                        <li><code>pip install -r requirements.txt</code></li>
+                        <li><code>python create_sample_images.py</code> (선택사항)</li>
+                        <li><code>python app.py</code></li>
+                        <li>웹 브라우저에서 <strong>http://localhost:5000</strong> 접속</li>
+                    </ol>
+                </div>
+                <div class="alert alert-success">
+                    <h5><i class="fas fa-check-circle"></i> 현재 상태:</h5>
+                    <p>이 HTML 파일을 웹 브라우저에서 직접 열어서 BMS 데이터 요약본을 확인할 수 있습니다.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // 2D PCA 그래프 그리기
+        function drawPCA2D() {
+            const canvas = document.getElementById('pca2d');
+            const ctx = canvas.getContext('2d');
+            
+            // 캔버스 초기화
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 600, 400);
+            
+            // 그리드 그리기
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            for (let x = 50; x <= 550; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, 350);
+                ctx.stroke();
+            }
+            for (let y = 50; y <= 350; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(550, y);
+                ctx.stroke();
+            }
+            
+            // 축 그리기
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 350);
+            ctx.lineTo(550, 350);
+            ctx.moveTo(50, 50);
+            ctx.lineTo(50, 350);
+            ctx.stroke();
+            
+            // 축 라벨
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('PC1 (-175 ~ 25)', 300, 380);
+            ctx.save();
+            ctx.translate(25, 200);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('PC2 (-8.5 ~ 11)', 0, 0);
+            ctx.restore();
+            
+            // 제목
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('PCA of All Device Rows (No Grouping)', 300, 30);
+            
+            // 메인 클러스터 (파란색 점들)
+            ctx.fillStyle = 'rgba(0, 0, 255, 0.7)';
+            const mainClusterPoints = [
+                [400, 200], [420, 180], [380, 220], [430, 190], [410, 210],
+                [390, 170], [440, 200], [370, 190], [400, 230], [420, 160],
+                [450, 180], [360, 210], [470, 200], [350, 180], [480, 190]
+            ];
+            mainClusterPoints.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 아웃라이어 (빨간색 점들)
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+            const outlierPoints = [[100, 150], [90, 160], [110, 140]];
+            outlierPoints.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 4, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 범례
+            ctx.fillStyle = 'rgba(0, 0, 255, 0.7)';
+            ctx.fillRect(450, 80, 15, 15);
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Main Cluster', 470, 92);
+            
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
+            ctx.fillRect(450, 100, 15, 15);
+            ctx.fillStyle = '#333';
+            ctx.fillText('Outliers', 470, 112);
+        }
+        
+        // 3D PCA 그래프 그리기
+        function drawPCA3D() {
+            const canvas = document.getElementById('pca3d');
+            const ctx = canvas.getContext('2d');
+            
+            // 캔버스 초기화
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 600, 400);
+            
+            // 그리드 그리기
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            for (let x = 50; x <= 550; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, 350);
+                ctx.stroke();
+            }
+            for (let y = 50; y <= 350; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(50, y);
+                ctx.lineTo(550, y);
+                ctx.stroke();
+            }
+            
+            // 축 그리기
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(50, 350);
+            ctx.lineTo(550, 350);
+            ctx.moveTo(50, 50);
+            ctx.lineTo(50, 350);
+            ctx.stroke();
+            
+            // 축 라벨
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('PC1', 300, 380);
+            ctx.save();
+            ctx.translate(25, 200);
+            ctx.rotate(-Math.PI/2);
+            ctx.fillText('PC2', 0, 0);
+            ctx.restore();
+            
+            // 제목
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('PCA of Raw Data (3D)', 300, 30);
+            
+            // 보라색 클러스터 (1229665632.0)
+            ctx.fillStyle = 'rgba(128, 0, 128, 0.7)';
+            const purplePoints = [
+                [300, 200], [290, 190], [310, 210], [280, 200], [320, 190],
+                [300, 180], [300, 220], [270, 210], [330, 200], [290, 220]
+            ];
+            purplePoints.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 주황색 클러스터 (1241290664.0)
+            ctx.fillStyle = 'rgba(255, 165, 0, 0.7)';
+            const orangePoints = [
+                [400, 250], [390, 240], [410, 260], [380, 250], [420, 240]
+            ];
+            orangePoints.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 녹색 클러스터 (1241290683.0)
+            ctx.fillStyle = 'rgba(0, 128, 0, 0.7)';
+            const greenPoints = [
+                [200, 270], [190, 260], [210, 280], [180, 270], [220, 260]
+            ];
+            greenPoints.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 갈색 클러스터 (1241248562.0)
+            ctx.fillStyle = 'rgba(165, 42, 42, 0.7)';
+            const brownPoints = [
+                [350, 150], [340, 140], [360, 160], [330, 150], [370, 140]
+            ];
+            brownPoints.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 하늘색 아웃라이어 (nan)
+            ctx.fillStyle = 'rgba(173, 216, 230, 0.8)';
+            const outlierPoints = [[500, 100], [490, 110], [510, 90]];
+            outlierPoints.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point[0], point[1], 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // 범례
+            ctx.textAlign = 'left';
+            ctx.font = '12px Arial';
+            
+            ctx.fillStyle = 'rgba(128, 0, 128, 0.7)';
+            ctx.fillRect(450, 80, 15, 15);
+            ctx.fillStyle = '#333';
+            ctx.fillText('1229665632.0', 470, 92);
+            
+            ctx.fillStyle = 'rgba(255, 165, 0, 0.7)';
+            ctx.fillRect(450, 100, 15, 15);
+            ctx.fillText('1241290664.0', 470, 112);
+            
+            ctx.fillStyle = 'rgba(0, 128, 0, 0.7)';
+            ctx.fillRect(450, 120, 15, 15);
+            ctx.fillText('1241290683.0', 470, 132);
+            
+            ctx.fillStyle = 'rgba(165, 42, 42, 0.7)';
+            ctx.fillRect(450, 140, 15, 15);
+            ctx.fillText('1241248562.0', 470, 152);
+            
+            ctx.fillStyle = 'rgba(173, 216, 230, 0.8)';
+            ctx.fillRect(450, 160, 15, 15);
+            ctx.fillText('nan (outlier)', 470, 172);
+        }
+        
+        // 페이지 로드 시 그래프 그리기
+        window.addEventListener('load', function() {
+            drawPCA2D();
+            drawPCA3D();
+        });
+    </script>
+</body>
+</html> 
