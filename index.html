@@ -199,6 +199,14 @@
                     <div class="stat-number">4</div>
                     <div class="stat-label">총 차량 수</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-number">2024.01</div>
+                    <div class="stat-label">데이터 시작 시간</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2024.12</div>
+                    <div class="stat-label">데이터 종료 시간</div>
+                </div>
             </div>
 
             <!-- 데이터 전처리 섹션 -->
@@ -294,6 +302,48 @@
                     <li>NaN 값을 열 평균으로 대체</li>
                     <li>모든 값이 NaN인 열(seq 열) 제거</li>
                 </ul>
+            </div>
+
+            <!-- 데이터 필드 정보 섹션 -->
+            <div class="section-card">
+                <h3 class="section-title">
+                    <i class="fas fa-list"></i>
+                    308개 데이터 필드 정보
+                </h3>
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle"></i> 주요 센서 필드:</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>🔋 배터리 관련 필드:</h6>
+                            <ul class="text-start">
+                                <li>voltage_1 ~ voltage_96 (96개 전압 센서)</li>
+                                <li>current_1 ~ current_96 (96개 전류 센서)</li>
+                                <li>temperature_1 ~ temperature_96 (96개 온도 센서)</li>
+                                <li>soc_1 ~ soc_96 (96개 SOC 센서)</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>📊 시스템 필드:</h6>
+                            <ul class="text-start">
+                                <li>device_no (장치 번호)</li>
+                                <li>timestamp (시간戳)</li>
+                                <li>seq (시퀀스 번호)</li>
+                                <li>total_voltage (총 전압)</li>
+                                <li>total_current (총 전류)</li>
+                                <li>avg_temperature (평균 온도)</li>
+                                <li>avg_soc (평균 SOC)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <h6>📋 필드 구조:</h6>
+                        <ul class="text-start">
+                            <li><strong>384개 센서 필드</strong>: voltage, current, temperature, soc (각 96개씩)</li>
+                            <li><strong>7개 시스템 필드</strong>: device_no, timestamp, seq, total_voltage, total_current, avg_temperature, avg_soc</li>
+                            <li><strong>총 391개 필드</strong>에서 결측치 처리 후 <strong>308개 필드</strong>로 정리</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <!-- 분석 결과 그래프 섹션 -->
