@@ -171,14 +171,6 @@
             margin-bottom: 1rem;
             text-align: center;
         }
-        
-        .canvas-graph {
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            border: 1px solid #dee2e6;
-        }
     </style>
 </head>
 <body>
@@ -315,7 +307,7 @@
                         <h4>2D PCA 분석 결과</h4>
                         <div class="chart-container">
                             <div class="chart-image-container">
-                                <canvas id="pca2d" width="600" height="400" class="canvas-graph"></canvas>
+                                <img src="https://sangwonjung005.github.io/Cursor-Web/imagespca_2d.png" alt="2D PCA Plot" class="chart-image">
                             </div>
                             <div class="chart-info">
                                 <h5>PCA of All Device Rows (No Grouping)</h5>
@@ -334,7 +326,7 @@
                         <h4>3D PCA 분석 결과</h4>
                         <div class="chart-container">
                             <div class="chart-image-container">
-                                <canvas id="pca3d" width="600" height="400" class="canvas-graph"></canvas>
+                                <img src="https://sangwonjung005.github.io/Cursor-Web/imagespca_3d.png" alt="3D PCA Plot" class="chart-image">
                             </div>
                             <div class="chart-info">
                                 <h5>PCA of Raw Data (3D)</h5>
@@ -391,229 +383,5 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <script>
-        // 2D PCA 그래프 그리기
-        function drawPCA2D() {
-            const canvas = document.getElementById('pca2d');
-            const ctx = canvas.getContext('2d');
-            
-            // 캔버스 초기화
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, 600, 400);
-            
-            // 그리드 그리기
-            ctx.strokeStyle = '#f0f0f0';
-            ctx.lineWidth = 1;
-            for (let x = 50; x <= 550; x += 50) {
-                ctx.beginPath();
-                ctx.moveTo(x, 50);
-                ctx.lineTo(x, 350);
-                ctx.stroke();
-            }
-            for (let y = 50; y <= 350; y += 50) {
-                ctx.beginPath();
-                ctx.moveTo(50, y);
-                ctx.lineTo(550, y);
-                ctx.stroke();
-            }
-            
-            // 축 그리기
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(50, 350);
-            ctx.lineTo(550, 350);
-            ctx.moveTo(50, 50);
-            ctx.lineTo(50, 350);
-            ctx.stroke();
-            
-            // 축 라벨
-            ctx.fillStyle = '#333';
-            ctx.font = 'bold 14px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('PC1 (-175 ~ 25)', 300, 380);
-            ctx.save();
-            ctx.translate(25, 200);
-            ctx.rotate(-Math.PI/2);
-            ctx.fillText('PC2 (-8.5 ~ 11)', 0, 0);
-            ctx.restore();
-            
-            // 제목
-            ctx.font = 'bold 16px Arial';
-            ctx.fillText('PCA of All Device Rows (No Grouping)', 300, 30);
-            
-            // 메인 클러스터 (파란색 점들)
-            ctx.fillStyle = 'rgba(0, 0, 255, 0.7)';
-            const mainClusterPoints = [
-                [400, 200], [420, 180], [380, 220], [430, 190], [410, 210],
-                [390, 170], [440, 200], [370, 190], [400, 230], [420, 160],
-                [450, 180], [360, 210], [470, 200], [350, 180], [480, 190]
-            ];
-            mainClusterPoints.forEach(point => {
-                ctx.beginPath();
-                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // 아웃라이어 (빨간색 점들)
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
-            const outlierPoints = [[100, 150], [90, 160], [110, 140]];
-            outlierPoints.forEach(point => {
-                ctx.beginPath();
-                ctx.arc(point[0], point[1], 4, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // 범례
-            ctx.fillStyle = 'rgba(0, 0, 255, 0.7)';
-            ctx.fillRect(450, 80, 15, 15);
-            ctx.fillStyle = '#333';
-            ctx.font = '12px Arial';
-            ctx.textAlign = 'left';
-            ctx.fillText('Main Cluster', 470, 92);
-            
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.8)';
-            ctx.fillRect(450, 100, 15, 15);
-            ctx.fillStyle = '#333';
-            ctx.fillText('Outliers', 470, 112);
-        }
-        
-        // 3D PCA 그래프 그리기
-        function drawPCA3D() {
-            const canvas = document.getElementById('pca3d');
-            const ctx = canvas.getContext('2d');
-            
-            // 캔버스 초기화
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, 600, 400);
-            
-            // 그리드 그리기
-            ctx.strokeStyle = '#f0f0f0';
-            ctx.lineWidth = 1;
-            for (let x = 50; x <= 550; x += 50) {
-                ctx.beginPath();
-                ctx.moveTo(x, 50);
-                ctx.lineTo(x, 350);
-                ctx.stroke();
-            }
-            for (let y = 50; y <= 350; y += 50) {
-                ctx.beginPath();
-                ctx.moveTo(50, y);
-                ctx.lineTo(550, y);
-                ctx.stroke();
-            }
-            
-            // 축 그리기
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(50, 350);
-            ctx.lineTo(550, 350);
-            ctx.moveTo(50, 50);
-            ctx.lineTo(50, 350);
-            ctx.stroke();
-            
-            // 축 라벨
-            ctx.fillStyle = '#333';
-            ctx.font = 'bold 14px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('PC1', 300, 380);
-            ctx.save();
-            ctx.translate(25, 200);
-            ctx.rotate(-Math.PI/2);
-            ctx.fillText('PC2', 0, 0);
-            ctx.restore();
-            
-            // 제목
-            ctx.font = 'bold 16px Arial';
-            ctx.fillText('PCA of Raw Data (3D)', 300, 30);
-            
-            // 보라색 클러스터 (1229665632.0)
-            ctx.fillStyle = 'rgba(128, 0, 128, 0.7)';
-            const purplePoints = [
-                [300, 200], [290, 190], [310, 210], [280, 200], [320, 190],
-                [300, 180], [300, 220], [270, 210], [330, 200], [290, 220]
-            ];
-            purplePoints.forEach(point => {
-                ctx.beginPath();
-                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // 주황색 클러스터 (1241290664.0)
-            ctx.fillStyle = 'rgba(255, 165, 0, 0.7)';
-            const orangePoints = [
-                [400, 250], [390, 240], [410, 260], [380, 250], [420, 240]
-            ];
-            orangePoints.forEach(point => {
-                ctx.beginPath();
-                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // 녹색 클러스터 (1241290683.0)
-            ctx.fillStyle = 'rgba(0, 128, 0, 0.7)';
-            const greenPoints = [
-                [200, 270], [190, 260], [210, 280], [180, 270], [220, 260]
-            ];
-            greenPoints.forEach(point => {
-                ctx.beginPath();
-                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // 갈색 클러스터 (1241248562.0)
-            ctx.fillStyle = 'rgba(165, 42, 42, 0.7)';
-            const brownPoints = [
-                [350, 150], [340, 140], [360, 160], [330, 150], [370, 140]
-            ];
-            brownPoints.forEach(point => {
-                ctx.beginPath();
-                ctx.arc(point[0], point[1], 2, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // 하늘색 아웃라이어 (nan)
-            ctx.fillStyle = 'rgba(173, 216, 230, 0.8)';
-            const outlierPoints = [[500, 100], [490, 110], [510, 90]];
-            outlierPoints.forEach(point => {
-                ctx.beginPath();
-                ctx.arc(point[0], point[1], 3, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // 범례
-            ctx.textAlign = 'left';
-            ctx.font = '12px Arial';
-            
-            ctx.fillStyle = 'rgba(128, 0, 128, 0.7)';
-            ctx.fillRect(450, 80, 15, 15);
-            ctx.fillStyle = '#333';
-            ctx.fillText('1229665632.0', 470, 92);
-            
-            ctx.fillStyle = 'rgba(255, 165, 0, 0.7)';
-            ctx.fillRect(450, 100, 15, 15);
-            ctx.fillText('1241290664.0', 470, 112);
-            
-            ctx.fillStyle = 'rgba(0, 128, 0, 0.7)';
-            ctx.fillRect(450, 120, 15, 15);
-            ctx.fillText('1241290683.0', 470, 132);
-            
-            ctx.fillStyle = 'rgba(165, 42, 42, 0.7)';
-            ctx.fillRect(450, 140, 15, 15);
-            ctx.fillText('1241248562.0', 470, 152);
-            
-            ctx.fillStyle = 'rgba(173, 216, 230, 0.8)';
-            ctx.fillRect(450, 160, 15, 15);
-            ctx.fillText('nan (outlier)', 470, 172);
-        }
-        
-        // 페이지 로드 시 그래프 그리기
-        window.addEventListener('load', function() {
-            drawPCA2D();
-            drawPCA3D();
-        });
-    </script>
 </body>
 </html> 
