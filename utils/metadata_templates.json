@@ -1,0 +1,169 @@
+{
+  "templates": {
+    "solar": {
+      "name": "RE100 태양광 NFT #{tokenId}",
+      "description": "{energyAmount}MWh 태양광 전력 거래 인증서",
+      "image": "ipfs://QmSolarPanelIcon/solar.png",
+      "animation_url": "ipfs://QmSolarAnimation/solar.mp4",
+      "attributes": [
+        {
+          "trait_type": "전력량 (MWh)",
+          "value": "{energyAmount}",
+          "display_type": "number"
+        },
+        {
+          "trait_type": "에너지 타입",
+          "value": "태양광"
+        },
+        {
+          "trait_type": "효율성",
+          "value": "높음"
+        },
+        {
+          "trait_type": "일조시간",
+          "value": "{sunHours}",
+          "display_type": "number"
+        }
+      ],
+      "carbon_factor": 0.466
+    },
+    "wind": {
+      "name": "RE100 풍력 NFT #{tokenId}",
+      "description": "{energyAmount}MWh 풍력 전력 거래 인증서",
+      "image": "ipfs://QmWindTurbineIcon/wind.png",
+      "animation_url": "ipfs://QmWindAnimation/wind.mp4",
+      "attributes": [
+        {
+          "trait_type": "전력량 (MWh)",
+          "value": "{energyAmount}",
+          "display_type": "number"
+        },
+        {
+          "trait_type": "에너지 타입",
+          "value": "풍력"
+        },
+        {
+          "trait_type": "풍속",
+          "value": "{windSpeed}",
+          "display_type": "number"
+        },
+        {
+          "trait_type": "터빈 수",
+          "value": "{turbineCount}",
+          "display_type": "number"
+        }
+      ],
+      "carbon_factor": 0.011
+    },
+    "hydro": {
+      "name": "RE100 수력 NFT #{tokenId}",
+      "description": "{energyAmount}MWh 수력 전력 거래 인증서",
+      "image": "ipfs://QmHydroIcon/hydro.png",
+      "animation_url": "ipfs://QmHydroAnimation/hydro.mp4",
+      "attributes": [
+        {
+          "trait_type": "전력량 (MWh)",
+          "value": "{energyAmount}",
+          "display_type": "number"
+        },
+        {
+          "trait_type": "에너지 타입",
+          "value": "수력"
+        },
+        {
+          "trait_type": "수위",
+          "value": "{waterLevel}",
+          "display_type": "number"
+        },
+        {
+          "trait_type": "댐 유형",
+          "value": "{damType}"
+        }
+      ],
+      "carbon_factor": 0.024
+    },
+    "biomass": {
+      "name": "RE100 바이오매스 NFT #{tokenId}",
+      "description": "{energyAmount}MWh 바이오매스 전력 거래 인증서",
+      "image": "ipfs://QmBiomassIcon/biomass.png",
+      "animation_url": "ipfs://QmBiomassAnimation/biomass.mp4",
+      "attributes": [
+        {
+          "trait_type": "전력량 (MWh)",
+          "value": "{energyAmount}",
+          "display_type": "number"
+        },
+        {
+          "trait_type": "에너지 타입",
+          "value": "바이오매스"
+        },
+        {
+          "trait_type": "연료 타입",
+          "value": "{fuelType}"
+        },
+        {
+          "trait_type": "지속가능성 인증",
+          "value": "FSC 인증"
+        }
+      ],
+      "carbon_factor": 0.18
+    }
+  },
+  "common_attributes": [
+    {
+      "trait_type": "거래일시",
+      "value": "{timestamp}"
+    },
+    {
+      "trait_type": "공급자",
+      "value": "{supplier}"
+    },
+    {
+      "trait_type": "수요자",
+      "value": "{buyer}"
+    },
+    {
+      "trait_type": "발전소 위치",
+      "value": "{location}"
+    },
+    {
+      "trait_type": "탄소 회피량 (tCO₂)",
+      "value": "{carbonOffset}",
+      "display_type": "number"
+    },
+    {
+      "trait_type": "RE100 적합성",
+      "value": "인증됨"
+    },
+    {
+      "trait_type": "CBAM 대응",
+      "value": "적합"
+    },
+    {
+      "trait_type": "ESG 등급",
+      "value": "A+"
+    },
+    {
+      "trait_type": "국가",
+      "value": "{country}"
+    },
+    {
+      "trait_type": "ISO 14001 인증",
+      "value": "인증됨"
+    }
+  ],
+  "properties_template": {
+    "category": "Energy Certificate",
+    "subcategory": "{energyType}",
+    "is_renewable": true,
+    "certification_standard": "RE100",
+    "carbon_offset_tco2": "{carbonOffset}",
+    "energy_amount_mwh": "{energyAmount}",
+    "blockchain": "Ethereum",
+    "standard": "ERC-721",
+    "vintage_year": "{year}",
+    "issuance_date": "{timestamp}",
+    "registry": "Energy NFT Registry",
+    "verification_method": "Smart Contract"
+  }
+}

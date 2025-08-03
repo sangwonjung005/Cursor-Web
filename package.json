@@ -1,16 +1,43 @@
 {
-  "name": "bms-data-dashboard",
+  "name": "energy-certificate-nft",
   "version": "1.0.0",
-  "description": "BMS 데이터 분석 대시보드",
-  "main": "index.html",
+  "description": "Energy Certificate NFT for RE100 and Carbon Trading",
+  "main": "index.js",
   "scripts": {
-    "start": "python -m http.server 8000",
-    "dev": "python -m http.server 8000",
-    "build": "echo 'No build step required'",
-    "deploy": "echo 'Deploy to GitHub Pages'"
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "deploy:local": "hardhat run scripts/deploy.js --network hardhat",
+    "deploy:sepolia": "hardhat run scripts/deploy.js --network sepolia",
+    "deploy:polygon": "hardhat run scripts/deploy.js --network polygon",
+    "deploy:mumbai": "hardhat run scripts/deploy.js --network mumbai",
+    "verify:sepolia": "hardhat verify --network sepolia",
+    "verify:polygon": "hardhat verify --network polygon",
+    "node": "hardhat node",
+    "clean": "hardhat clean"
   },
-  "keywords": ["bms", "data", "analysis", "dashboard"],
-  "author": "BMS Data Team",
+  "keywords": [
+    "NFT",
+    "Energy",
+    "RE100",
+    "Carbon",
+    "Blockchain",
+    "Ethereum"
+  ],
+  "author": "Energy NFT Team",
   "license": "MIT",
-  "homepage": "https://[your-username].github.io/bms-data-dashboard"
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@openzeppelin/hardhat-upgrades": "^3.0.0",
+    "hardhat": "^2.19.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.8.0",
+    "web3": "^4.2.0",
+    "axios": "^1.6.0"
+  }
 } 

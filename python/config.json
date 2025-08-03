@@ -1,0 +1,12 @@
+{
+  "network": "sepolia",
+  "rpc_url": "https://sepolia.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+  "contract_address": "0xYOUR_DEPLOYED_CONTRACT_ADDRESS",
+  "contract_abi_path": "../artifacts/contracts/EnergyCertificateNFT.sol/EnergyCertificateNFT.json",
+  "private_key": "0xYOUR_PRIVATE_KEY",
+  "pinata_api_key": "YOUR_PINATA_API_KEY",
+  "pinata_secret_key": "YOUR_PINATA_SECRET_KEY",
+  "gas_price_gwei": 10,
+  "gas_limit": 500000,
+  "confirmation_blocks": 1
+}
